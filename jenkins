@@ -1,0 +1,81 @@
+ What is a Jenkins Pipeline?
+A Pipeline is a set of automated steps to build, test, and deploy your code in Jenkins. Pipeline scripts are written in Groovy, and they can be defined in:
+
+The Jenkins UI (inline)
+
+A Jenkinsfile in your repository
+
+🧱 Types of Jenkins Pipelines
+Type	Description
+Declarative	Simpler, more structured. Recommended for most use cases.
+Scripted	More flexible, used for advanced logic.
+
+📘 1. Basic Declarative Pipeline (Jenkinsfile)
+groovy
+Copy code
+pipeline {
+    agent any  // Run on any available agent
+
+    stages {
+        stage('Clone') {
+            steps {
+                echo 'Cloning repository...'
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                sh './build.sh'  // or 'mvn clean install' for Maven projects
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh './test.sh'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+                sh './deploy.sh'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+📘 2. Scripted Pipeline
+groovy
+Copy code
+node {
+    stage('Clone') {
+        echo 'Cloning repository...'
+        git 'https://github.com/your-username/your-repo.git'
+    }
+
+    stage('Build') {
+        echo 'Building the project...'
+        sh './build.sh'
+    }
+
+    stage('Test') {
+        echo 'Running tests...'
+        sh './test.sh'
+    }
+
+    stage('Deploy') {
+        echo 'Deploying application...'
+        sh './deploy.sh'
+    }
+}
