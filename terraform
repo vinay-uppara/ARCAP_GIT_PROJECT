@@ -1,0 +1,104 @@
+What is Terraform?
+Terraform is an open-source Infrastructure as Code (IaC) tool created by HashiCorp that allows you to provision, manage, and version infrastructure using a high-level configuration language.
+
+Instead of manually setting up cloud resources (e.g., AWS, Azure, GCP), you define them in .tf files — and Terraform builds them automatically.
+
+🧱 Why Use Terraform?
+Benefit	Description
+✅ Infrastructure as Code	Define infrastructure in version-controlled text files.
+✅ Multi-cloud support	Manage AWS, Azure, GCP, Kubernetes, etc. from a single tool.
+✅ Idempotent	Only makes changes when needed.
+✅ Plan and preview	See what will change before applying it.
+✅ State tracking	Maintains a record of your infrastructure.
+
+⚙️ Core Concepts
+1. Providers
+A provider is the plugin that interacts with cloud services.
+
+Examples: aws, google, azurerm, kubernetes.
+
+hcl
+Copy code
+provider "aws" {
+  region = "us-east-1"
+}
+
+2. Resources
+A resource is an object to be created or managed (e.g., EC2 instance, S3 bucket).
+
+hcl
+Copy code
+resource "aws_instance" "web" {
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+}
+
+3. Variables
+Define input values for reuse and flexibility.
+
+hcl
+Copy code
+variable "region" {
+  default = "us-east-1"
+}
+
+4. Outputs
+Print important values after provisioning (e.g., IP addresses, URLs).
+
+h
+Copy code
+output "instance_ip" {
+  value = aws_instance.web.public_ip
+}
+
+5. State
+Terraform stores the infrastructure state in a file named terraform.tfstate.
+
+It uses this to determine what’s already created and what needs to change.
+
+6. Modules
+Modules let you reuse and share Terraform configurations.
+
+Think of them as reusable "building blocks".
+
+hcl
+Copy code
+module "vpc" {
+  source = "./modules/vpc"
+  cidr_block = "10.0.0.0/16"
+}
+
+7. Terraform CLI Workflow
+Command	Purpose
+terraform init	Initializes the project (downloads provider plugins).
+terraform plan	Shows what will be created/changed.
+terraform apply	Applies the plan and provisions resources.
+terraform destroy	Deletes all the infrastructure managed by Terraform.
+
+✅ Example: Minimal Terraform for AWS EC2
+hcl
+Copy code
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_instance" "web" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+}
+Steps:
+
+bash
+Copy code
+terraform init
+terraform plan
+terraform apply
+
+📦 Summary
+Term	Meaning
+Provider	Talks to your cloud (e.g., AWS, Azure, GCP)
+Resource	Defines something to create (VM, DB, etc.)
+Variable	Input to make your code flexible
+State	Stores what Terraform created
+Module	Reusable group of resources
+CLI commands	Used to initialize, plan, apply, and destroy infrastructure
